@@ -13,7 +13,6 @@ $gray-medium-light: #eaeaea;
 }
 
 /* sidebar */
-
 aside {
   section.user_info {
     margin-top: 20px;
@@ -91,6 +90,12 @@ input {
   margin-left: 0;
 }
 
+/* sign up page */
+
+img#default-img {
+  margin-bottom: 20px;
+}
+
 /* universal */
 
 body {
@@ -103,6 +108,11 @@ section {
 
 textarea {
   resize: vertical;
+}
+
+img.center {
+    display: block;
+    margin: 0 auto;
 }
 
 .center {
