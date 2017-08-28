@@ -31,12 +31,14 @@ function CenterControl(controlDiv, map) {
   controlText.style.fontSize = '16px';
   controlText.style.paddingLeft = '5px';
   controlText.style.paddingRight = '5px';
-  controlText.innerHTML = 'C';
+  controlText.innerHTML = '<i class="fa fa-location-arrow map-icon" aria-hidden="true"></i>';
   controlUI.appendChild(controlText);
 
   // Setup the click event listeners: simply set the map to Chicago.
   controlUI.addEventListener('click', function() {
+    // Center in on and then zoom in on position
     map.setCenter(coords);
+    map.setZoom(16);
   });
 
 }
@@ -69,7 +71,7 @@ function EventControl(controlDiv, map) {
   controlText.style.lineHeight = '38px';
   controlText.style.paddingLeft = '5px';
   controlText.style.paddingRight = '5px';
-  controlText.innerHTML = 'New Event';
+  controlText.innerHTML = '<div class="map-icon"> New Event </div>';
   controlUI.appendChild(controlText);
 
   // Setup the click event listeners: simply set the map to Chicago.
