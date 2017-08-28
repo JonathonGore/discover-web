@@ -97,13 +97,13 @@ function initialize() {
   function displayOnMap(position){
     coords.lat = position.coords.latitude;
     coords.lng = position.coords.longitude;
-    marker = handler.addMarker(
-      {
-        "lat": coords.lat,
-        "lng": coords.lng,
-        "infowindow": "hello!"
-      }
-    );
+
+    var image = 'https://www.robotwoods.com/dev/misc/bluecircle.png';
+    var locationMarker = new google.maps.Marker({
+      position: {lat: coords.lat, lng: coords.lng},
+      map: map,
+      icon: image
+    });
     // Having init map here will block and wait for the users location
     //initMap();
   };
