@@ -14,6 +14,13 @@ function initialize() {
   function displayOnMap(position){
     coords.lat = position.coords.latitude;
     coords.lng = position.coords.longitude;
+    marker = handler.addMarker(
+      {
+        "lat": coords.lat,
+        "lng": coords.lng,
+        "infowindow": "hello!"
+      }
+    );
     // Having init map here will block and wait for the users location
     //initMap();
   };

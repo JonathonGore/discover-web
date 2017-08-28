@@ -5,5 +5,8 @@
     Let's find something to do.
   </h2>
   <%= render 'layouts/maps' %>
-  <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
+
+  <%# Only produce sign up button if user is not logged in %>
+  <%= link_to "Sign up now!", signup_path, id: "sign-up", class: "btn btn-lg btn-primary" if @logged_out %>
+
 </div>
