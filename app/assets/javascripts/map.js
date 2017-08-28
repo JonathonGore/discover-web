@@ -1,5 +1,86 @@
 // Global coordinates var used for users location
 var coords;
+var map;
+
+/**
+ * The CenterControl adds a control to the map that recenters the map on
+ * Chicago.
+ * This constructor takes the control DIV as an argument.
+ * @constructor
+ */
+function CenterControl(controlDiv, map) {
+
+  // Set CSS for the control border.
+  var controlUI = document.createElement('div');
+  controlUI.style.backgroundColor = '#fff';
+  controlUI.style.border = '3px solid #fff';
+  controlUI.style.borderRadius = '1px';
+  controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+  controlUI.style.cursor = 'pointer';
+  controlUI.style.marginRight = '10px';
+  controlUI.style.height = '26px';
+  controlUI.style.width = '28px';
+  controlUI.style.textAlign = 'center';
+  controlUI.title = 'Click to recenter the map';
+  controlDiv.appendChild(controlUI);
+
+  // Set CSS for the control interior.
+  var controlText = document.createElement('div');
+  controlText.style.color = 'rgb(25,25,25)';
+  controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+  controlText.style.fontSize = '16px';
+  controlText.style.paddingLeft = '5px';
+  controlText.style.paddingRight = '5px';
+  controlText.innerHTML = 'C';
+  controlUI.appendChild(controlText);
+
+  // Setup the click event listeners: simply set the map to Chicago.
+  controlUI.addEventListener('click', function() {
+    map.setCenter(coords);
+  });
+
+}
+
+/**
+ * The EventControl adds a control to the map that makes a request to Discover
+ * backend to create a new event.
+ * This constructor takes the control DIV as an argument.
+ * @constructor
+ */
+function EventControl(controlDiv, map) {
+
+  // Set CSS for the control border.
+  var controlUI = document.createElement('div');
+  controlUI.style.backgroundColor = '#fff';
+  controlUI.style.border = '2px solid #fff';
+  controlUI.style.borderRadius = '3px';
+  controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+  controlUI.style.cursor = 'pointer';
+  controlUI.style.textAlign = 'center';
+  controlUI.style.margin = '10px'
+  controlUI.title = 'Click to create event';
+  controlDiv.appendChild(controlUI);
+
+  // Set CSS for the control interior.
+  var controlText = document.createElement('div');
+  controlText.style.color = 'rgb(25,25,25)';
+  controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+  controlText.style.fontSize = '16px';
+  controlText.style.lineHeight = '38px';
+  controlText.style.paddingLeft = '5px';
+  controlText.style.paddingRight = '5px';
+  controlText.innerHTML = 'New Event';
+  controlUI.appendChild(controlText);
+
+  // Setup the click event listeners: simply set the map to Chicago.
+  controlUI.addEventListener('click', function() {
+    //map.setCenter(chicago);
+    /*
+      add logic here for creating event
+    */
+  });
+
+}
 
 function initialize() {
   coords = {lat: 43.471035, lng: -80.544545};
@@ -78,4 +159,22 @@ function initMap() {
       handler.map.centerOn(marker);
     }
   );
+
+  // Assign the map service object once initialized to map variable
+  map = handler.map.serviceObject;
+
+  // Create the DIV to hold the control and call the CenterControl()
+  // constructor passing in this DIV.
+  var centerControlDiv = document.createElement('div');
+  var centerControl = new CenterControl(centerControlDiv, map);
+
+  // Create the DIV to hold the add event button, then create the control
+  var eventControlDiv = document.createElement('div');
+  var eventControl = new EventControl(eventControlDiv, map);
+
+  eventControlDiv.index = 1;
+  centerControlDiv.index = 1;
+  // Add the buttons to the map
+  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(eventControlDiv);
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
 }
