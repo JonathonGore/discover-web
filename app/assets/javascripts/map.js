@@ -172,7 +172,9 @@ function initMap() {
     $("#longitude").val(event.latLng.lng());
   });
 
+  // Listener for cancel button on new event form
   $("#event-cancel").click(function() {
+    // Hide the form on cancel
     $("#new-event").addClass("hidden");
   });
 
@@ -185,8 +187,10 @@ function initMap() {
   var eventControlDiv = document.createElement('div');
   var eventControl = new EventControl(eventControlDiv, map);
 
+  // Make the buttons visible on the map 
   eventControlDiv.index = 1;
   centerControlDiv.index = 1;
+
   // Add the buttons to the map
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(eventControlDiv);
   map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
