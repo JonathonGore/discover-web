@@ -195,9 +195,34 @@ footer {
 
 /* map */
 
+.new-event .new-event-form {
+  input.form-control {
+    height: 30px !important;
+  }
+
+  #startDate, #endDate {
+    color: #999999;
+  }
+}
+
+.new-event {
+  /* Positioning */
+  width: 25%;
+  left: 205px;
+  margin: 5px 0px 5px -25%;
+  position: relative;
+  z-index: 1;
+
+  /* Styling */
+  background-color: white;
+  padding: 4px;
+  border-radius: 4px;
+}
+
 .map {
   margin: auto;
   width: 800px;
+  display: flex;
 }
 
 .map-icon {
@@ -222,4 +247,8 @@ i.map-icon {
   width: 100%;
   margin-top: 45px;
   @include box_sizing;
+}
+
+.hidden {
+  display: none;
 }

@@ -76,7 +76,7 @@ function EventControl(controlDiv, map) {
 
   // Setup the click event listeners: simply set the map to Chicago.
   controlUI.addEventListener('click', function() {
-    //map.setCenter(chicago);
+    $("#new-event").removeClass("hidden");
     /*
       add logic here for creating event
     */
@@ -164,6 +164,17 @@ function initMap() {
 
   // Assign the map service object once initialized to map variable
   map = handler.map.serviceObject;
+
+  // Create an event listener for getting coordinate from click
+  google.maps.event.addListener(map, 'click', function(event) {
+    //alert(event.latLng);  // in event.latLng  you have the coordinates of click
+    $("#latitude").val(event.latLng.lat());
+    $("#longitude").val(event.latLng.lng());
+  });
+
+  $("#event-cancel").click(function() {
+    $("#new-event").addClass("hidden");
+  });
 
   // Create the DIV to hold the control and call the CenterControl()
   // constructor passing in this DIV.
