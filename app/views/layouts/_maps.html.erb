@@ -1,34 +1,34 @@
 <div class="map">
   <div class="new-event hidden" id="new-event">
-    <form class="new-event-form">
-      <div class="form-group">
-        <label for="eventName">Event Name</label>
-        <input type="text" class="form-control" name="eventName" id="eventName" placeholder="Enter event name">
-      </div>
 
-      <div class="form-group">
-        <label for="startDate">Start Date</label>
-        <input type="datetime-local" class="form-control" name="startDate" id="startDate">
-      </div>
+    <%= form_tag 'event', class: 'new-event-form' do %>
 
-      <div class="form-group">
-        <label for="startDate">End Date</label>
-        <input type="datetime-local" class="form-control" name="endDate" id="endDate">
-      </div>
+      <%#  Input for eventName %>
+      <%= label_tag(:name, "Event Name") %>
+      <%= text_field_tag(:name, nil, class: 'form-control',  placeholder: 'Event name') %>
 
-      <div class="form-group">
-        <label for="eventName">Latitude</label>
-        <input type="text" id="latitude" class="form-control" name="latitude" id="eventName" placeholder="Latitude">
-      </div>
+      <%# Input for startDate %>
+      <%= label_tag(:startDate, "Start Date") %>
+      <%= datetime_field_tag(:startDate, nil, class: 'form-control') %>
 
-      <div class="form-group">
-        <label for="eventName">Longtitude</label>
-        <input type="text" id="longitude" class="form-control" name="longitude" id="eventName" placeholder="Longitude">
-      </div>
+      <%# Input for endDate %>
+      <%= label_tag(:endDate, "End Date") %>
+      <%= datetime_field_tag(:endDate, nil, class: 'form-control') %>
 
-      <button type="reset" id="event-cancel" class="btn btn-secondary">Cancel</button>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+      <%#  Input for Latitude %>
+      <%= label_tag(:latitude, "Latitude") %>
+      <%= text_field_tag(:latitude, nil, class: 'form-control',  placeholder: 'Latitude') %>
+
+      <%#  Input for Longitude %>
+      <%= label_tag(:longitude, "Longitude") %>
+      <%= text_field_tag(:longitude, nil, class: 'form-control',  placeholder: 'Longitude') %>
+
+      <%# Cancel button tag %>
+      <%= button_tag('Cancel', type: 'reset', class: 'btn btn-secondary', name: 'cancel', id: 'event-cancel') %>
+
+      <%# Submit button tag %>
+      <%= button_tag('Submit', type: 'custom-submit', class: 'btn btn-primary') %>
+    <% end %>
   </div>
   <div id="map" style='width: 800px; height: 400px;'></div>
 </div>
