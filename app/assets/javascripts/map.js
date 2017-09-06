@@ -3,6 +3,28 @@ var coords;
 var map;
 
 /**
+ * prepareDate consumes value from the form from creating a
+ * new event and validates and returns a completed object and a list
+ * of errors if any.
+ */
+function prepareData(formArray) {
+    // The values we want to keep
+    var values = ["name", "endDate", "startDate", "latitude", "longitude"];
+
+    // The array to return
+    var tempArray = {};
+    for (var i = 0; i < formArray.length; i++){
+      tempArray[formArray[i]['name']] = formArray[i]['value'];
+    }
+
+    var returnArray = {};
+    for (var j = 0; j < values.length; j++){
+        returnArray[values[j]] = tempArray[values[j]];
+    }
+    return returnArray;
+}
+
+/**
  * The CenterControl adds a control to the map that recenters the map on
  * Chicago.
  * This constructor takes the control DIV as an argument.
@@ -187,11 +209,33 @@ function initMap() {
   var eventControlDiv = document.createElement('div');
   var eventControl = new EventControl(eventControlDiv, map);
 
-  // Make the buttons visible on the map 
+  // Make the buttons visible on the map
   eventControlDiv.index = 1;
   centerControlDiv.index = 1;
 
   // Add the buttons to the map
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(eventControlDiv);
   map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
+
+  // Add action for when the form is submitted
+  $('#form').submit(function() {
+
+    // Take values from form and create object
+    var formArray = $(this).serializeArray()
+    var returnArray = prepareData(formArray)
+
+    // Post to backend
+    $.ajax({
+        type: "POST",
+        url: $(this).attr('action'), //sumbits it to the given url of the form
+        data: JSON.stringify(returnArray)
+    }).success(function(json){
+        // Probably want to do something different
+        console.log("success", json);
+    }).error(function (xhr) {
+      // handle error
+      console.log("error");
+    });
+    return false; // prevents normal behaviour
+  });
 }
