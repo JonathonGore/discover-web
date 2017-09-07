@@ -1,7 +1,7 @@
 <div class="map">
   <div class="new-event hidden" id="new-event">
 
-    <%= form_tag 'http://0.0.0.0:8000/events', remote: true, class: 'new-event-form', id: 'form' do %>
+    <%= form_tag 'http://107.170.241.172:8000/events', remote: true, class: 'new-event-form', id: 'form' do %>
 
       <%#  Input for eventName %>
       <%= label_tag(:name, "Event Name") %>
@@ -17,11 +17,11 @@
 
       <%#  Input for Latitude %>
       <%= label_tag(:latitude, "Latitude") %>
-      <%= text_field_tag(:latitude, nil, class: 'form-control',  placeholder: 'Latitude', readonly: true) %>
+      <%= text_field_tag(:latitude, nil, class: 'form-control', placeholder: 'Latitude', readonly: true) %>
 
       <%#  Input for Longitude %>
       <%= label_tag(:longitude, "Longitude") %>
-      <%= text_field_tag(:longitude, nil, class: 'form-control',  placeholder: 'Longitude', readonly: true) %>
+      <%= text_field_tag(:longitude, nil, class: 'form-control', placeholder: 'Longitude', readonly: true) %>
 
       <%# Cancel button tag %>
       <%= button_tag('Cancel', type: 'reset', class: 'btn btn-secondary', name: 'cancel', id: 'event-cancel') %>

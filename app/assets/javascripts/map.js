@@ -2,6 +2,14 @@
 var coords;
 var map;
 
+/* Populates the form dialog for creating a new event with initial data,
+ * like coordinates.
+ */
+function populateCreateEventForm() {
+  $("#latitude").val(coords.lat);
+  $("#longitude").val(coords.lng);
+}
+
 /**
  * prepareDate consumes value from the form from creating a
  * new event and validates and returns a completed object and a list
@@ -98,6 +106,9 @@ function EventControl(controlDiv, map) {
 
   // Setup the click event listeners: simply set the map to Chicago.
   controlUI.addEventListener('click', function() {
+
+    // Populates the create event form with initial information
+    populateCreateEventForm();
     $("#new-event").removeClass("hidden");
     /*
       add logic here for creating event
