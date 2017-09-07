@@ -195,6 +195,11 @@ footer {
 
 /* map */
 
+.map-container {
+  width: 800px;
+  margin: auto;
+}
+
 .new-event .new-event-form {
   input.form-control {
     height: 30px !important;
@@ -220,8 +225,7 @@ footer {
 }
 
 .map {
-  margin: auto;
-  width: 800px;
+  width: 100%;
   display: flex;
 }
 

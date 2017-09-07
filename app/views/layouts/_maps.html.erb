@@ -1,3 +1,7 @@
+<div class="map-container">
+<%# Div for holding errors pertaining to new event form %>
+<div id="map-errors" class="hidden alert alert-danger"></div>
+
 <div class="map">
   <div class="new-event hidden" id="new-event">
 
@@ -32,7 +36,7 @@
   </div>
   <div id="map" style='width: 800px; height: 400px;'></div>
 </div>
-
+</div>
 <%= javascript_include_tag "map", "data-turbolinks-track" => "reload" %>
 <%= javascript_include_tag "marketcluster", "data-turbolinks-track" => "reload" %>
 

@@ -1,6 +1,7 @@
 // Global coordinates var used for users location
 var coords;
 var map;
+var errorPrompt = "<strong>Error: </strong>"
 
 /* Populates the form dialog for creating a new event with initial data,
  * like coordinates.
@@ -8,6 +9,19 @@ var map;
 function populateCreateEventForm() {
   $("#latitude").val(coords.lat);
   $("#longitude").val(coords.lng);
+}
+
+/* Consumes an array of data representing the data from a
+ * create event form and validates it returning a list of errors
+ * (if any).
+ */
+function validateData(data) {
+  var errors = [];
+  // Ensure the name field is not blank
+  if(data["name"] === "") {
+    errors.push("Name cannot be blank");
+  }
+  return errors;
 }
 
 /**
@@ -104,7 +118,6 @@ function EventControl(controlDiv, map) {
   controlText.innerHTML = '<div class="map-icon"> New Event </div>';
   controlUI.appendChild(controlText);
 
-  // Setup the click event listeners: simply set the map to Chicago.
   controlUI.addEventListener('click', function() {
 
     // Populates the create event form with initial information
@@ -114,7 +127,6 @@ function EventControl(controlDiv, map) {
       add logic here for creating event
     */
   });
-
 }
 
 function initialize() {
@@ -140,10 +152,8 @@ function initialize() {
     // Having init map here will block and wait for the users location
     //initMap();
   };
-
   initMap();
 }
-
 
 function initMap() {
 
@@ -230,23 +240,51 @@ function initMap() {
 
   // Add action for when the form is submitted
   $('#form').submit(function() {
-
     // Take values from form and create object
-    var formArray = $(this).serializeArray()
-    var returnArray = prepareData(formArray)
+    var formArray = $(this).serializeArray();
+    var returnArray = prepareData(formArray);
 
-    // Post to backend
-    $.ajax({
-        type: "POST",
-        url: $(this).attr('action'), //sumbits it to the given url of the form
-        data: JSON.stringify(returnArray)
-    }).success(function(json){
-        // Probably want to do something different
-        console.log("success", json);
-    }).error(function (xhr) {
-      // handle error
-      console.log("error");
-    });
+    // Next validate data
+    var errors = validateData(returnArray);
+    // Get the amount of errors
+    var amt = errors.length;
+    // If the size of errors array is non-zero we cannot go ahead an submit
+    // Instead we must display errors
+    if(amt === 0) {
+      // hide errors div
+      $("#map-errors").addClass("hidden");
+      // Close dialog
+      $("#new-event").addClass("hidden");
+      // Create new marker at the location
+
+      // Post to backend
+      $.ajax({
+          type: "POST",
+          url: $(this).attr('action'), //sumbits it to the given url of the form
+          data: JSON.stringify(returnArray)
+      }).success(function(json){
+          // Probably want to do something different
+          console.log("success", json);
+      }).error(function (xhr) {
+        // handle error
+        console.log("error");
+      });
+    } else {
+      // Here we have errors so display them
+      // TODO
+
+      // Clear existing errors
+      $("#map-errors").html("");
+      // Append new errors
+      for(var i = 0; i < errors.length; i++) {
+        $("#map-errors").append(errorPrompt + errors[i]);
+      }
+      // Unhide errors div
+      $("#map-errors").removeClass("hidden");
+    }
+
+
+
     return false; // prevents normal behaviour
   });
 }
