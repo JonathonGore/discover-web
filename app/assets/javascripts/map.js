@@ -3,6 +3,13 @@ var coords;
 var map;
 var errorPrompt = "<strong>Error: </strong>"
 
+function addMarker(coords, name) {
+  var locationMarker = new google.maps.Marker({
+    position: new google.maps.LatLng(parseFloat(coords.lat), parseFloat(coords.lng)),
+    map: map
+  });
+}
+
 /* Populates the form dialog for creating a new event with initial data,
  * like coordinates.
  */
@@ -256,6 +263,7 @@ function initMap() {
       // Close dialog
       $("#new-event").addClass("hidden");
       // Create new marker at the location
+      addMarker({lat: returnArray["latitude"], lng: returnArray["longitude"]}, returnArray["name"]);
 
       // Post to backend
       $.ajax({
@@ -271,7 +279,6 @@ function initMap() {
       });
     } else {
       // Here we have errors so display them
-      // TODO
 
       // Clear existing errors
       $("#map-errors").html("");
