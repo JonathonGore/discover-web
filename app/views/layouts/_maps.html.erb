@@ -5,7 +5,16 @@
 <div class="map">
   <div class="new-event hidden" id="new-event">
 
-    <%= form_tag 'http://107.170.241.172:8000/events', remote: true, class: 'new-event-form', id: 'form' do %>
+    <%# TODO: Figure out why this is and move these addresses to configuration file %>
+
+    <%# Production Server%>
+    <%#<%= form_tag 'http://107.170.241.172:8000/events', remote: true, class: 'new-event-form', id: 'form' do %>
+
+    <%# 0.0.0.0 must be used when discover is running inside a docker container %>
+    <%#<%= form_tag 'http://0.0.0.0:8000/events', remote: true, class: 'new-event-form', id: 'form' do %>
+
+    <%# localhost must be used when discover is running inside intellij %>
+    <%= form_tag 'http://localhost:8000/events', remote: true, class: 'new-event-form', id: 'form' do %>
 
       <%#  Input for eventName %>
       <%= label_tag(:name, "Event Name") %>

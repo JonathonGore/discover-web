@@ -3,9 +3,9 @@ var coords;
 var map;
 var errorPrompt = "<strong>Error: </strong>"
 
-function addMarker(coords, name) {
+function addMarker(c, name) {
   var locationMarker = new google.maps.Marker({
-    position: new google.maps.LatLng(parseFloat(coords.lat), parseFloat(coords.lng)),
+    position: new google.maps.LatLng(parseFloat(c.lat), parseFloat(c.lng)),
     map: map
   });
 }
@@ -28,13 +28,31 @@ function validateData(data) {
   if(data["name"] === "") {
     errors.push("Name cannot be blank");
   }
+
+  // We have to convert certain values from string to numbers...
+  deleteOrConvert("longitude", data);
+  deleteOrConvert("latitude", data);
+  deleteOrConvert("startDate", data);
+  deleteOrConvert("endDate", data);
+
   return errors;
 }
 
+/* deleteOrConvert(key, map) consumes a key and a map and tests to see if
+ * the key key is in map. If it is non-null converts the string value to a float
+ * and replaces it in the map. Otherwise delete the key
+ */
+function deleteOrConvert(key, map) {
+  if(map[key] === "") {
+    delete map[key]
+  } else {
+    map[key] = parseFloat(map[key]);
+  }
+}
+
 /**
- * prepareDate consumes value from the form from creating a
- * new event and validates and returns a completed object and a list
- * of errors if any.
+ * prepareDate consumes value from the form for creating a
+ * new event returns a map of key-value pairs
  */
 function prepareData(formArray) {
     // The values we want to keep
@@ -46,11 +64,11 @@ function prepareData(formArray) {
       tempArray[formArray[i]['name']] = formArray[i]['value'];
     }
 
-    var returnArray = {};
+    var valueMap = {};
     for (var j = 0; j < values.length; j++){
-        returnArray[values[j]] = tempArray[values[j]];
+        valueMap[values[j]] = tempArray[values[j]];
     }
-    return returnArray;
+    return valueMap;
 }
 
 /**
@@ -201,14 +219,14 @@ function initMap() {
 
       // Add markers to map
       // Eventually make a request to backend to fetch markers
-      marker = handler.addMarker(
+      /*marker = handler.addMarker(
         {
           "lat": coords.lat,
           "lng": coords.lng,
           "infowindow": "hello!"
         }
-      );
-      handler.map.centerOn(marker);
+      );*/
+      //handler.map.centerOn(marker);
     }
   );
 
@@ -249,10 +267,10 @@ function initMap() {
   $('#form').submit(function() {
     // Take values from form and create object
     var formArray = $(this).serializeArray();
-    var returnArray = prepareData(formArray);
+    var valueMap = prepareData(formArray);
 
     // Next validate data
-    var errors = validateData(returnArray);
+    var errors = validateData(valueMap);
     // Get the amount of errors
     var amt = errors.length;
     // If the size of errors array is non-zero we cannot go ahead an submit
@@ -263,18 +281,22 @@ function initMap() {
       // Close dialog
       $("#new-event").addClass("hidden");
       // Create new marker at the location
-      addMarker({lat: returnArray["latitude"], lng: returnArray["longitude"]}, returnArray["name"]);
+      addMarker({lat: valueMap["latitude"], lng: valueMap["longitude"]}, valueMap["name"]);
 
       // Post to backend
       $.ajax({
           type: "POST",
           url: $(this).attr('action'), //sumbits it to the given url of the form
-          data: JSON.stringify(returnArray)
+          data: JSON.stringify(valueMap),
+          xhrFields: {
+            withCredentials: false
+          }
       }).success(function(json){
           // Probably want to do something different
           console.log("success", json);
       }).error(function (xhr) {
         // handle error
+        debugger;
         console.log("error");
       });
     } else {
