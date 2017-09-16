@@ -18,6 +18,30 @@ function populateCreateEventForm() {
   $("#longitude").val(coords.lng);
 }
 
+function fetchMarkers() {
+  // Post to backend
+  $.ajax({
+      type: "GET",
+      // This needs to be changed depending on environment
+      url: "http://localhost:8000/events",
+      xhrFields: {
+        withCredentials: false
+      }
+  }).success(function(json){
+      markers = JSON.parse(json);
+      for(var i = 0; i < markers.length; ++i) {
+        new google.maps.Marker({
+          position: new google.maps.LatLng(markers[i]["latitude"], markers[i]["longitude"]),
+          title: markers[i]["name"],
+          map: map
+        });
+      }
+  }).error(function (xhr) {
+    // handle error
+    console.log("error");
+  });
+}
+
 /* Consumes an array of data representing the data from a
  * create event form and validates it returning a list of errors
  * (if any).
@@ -219,6 +243,7 @@ function initMap() {
 
       // Add markers to map
       // Eventually make a request to backend to fetch markers
+      fetchMarkers();
       /*marker = handler.addMarker(
         {
           "lat": coords.lat,
