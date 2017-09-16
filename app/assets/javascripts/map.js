@@ -29,12 +29,28 @@ function fetchMarkers() {
       }
   }).success(function(json){
       markers = JSON.parse(json);
+
+      // For each marker we receive from the database add it to the map
       for(var i = 0; i < markers.length; ++i) {
-        new google.maps.Marker({
+
+        var content = markers[i]["name"]
+
+        // Create the actual marker
+        marker = new google.maps.Marker({
           position: new google.maps.LatLng(markers[i]["latitude"], markers[i]["longitude"]),
           title: markers[i]["name"],
           map: map
         });
+
+        // Add a listener to the marker to allow a dialog to open
+        google.maps.event.addListener(marker, 'click',
+          (function(marker,content){ return function() {
+            var infowindow = new google.maps.InfoWindow()
+            infowindow.setContent(content);
+            infowindow.open(map,marker);
+          };
+        })(marker,content));
+
       }
   }).error(function (xhr) {
     // handle error
