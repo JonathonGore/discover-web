@@ -58,6 +58,10 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.5)
+    config (1.4.0)
+      activesupport (>= 3.0)
+      deep_merge (~> 1.1.1)
+    deep_merge (1.1.1)
     erubi (1.6.1)
     execjs (2.7.0)
     ffi (1.9.18)
@@ -212,6 +216,7 @@ DEPENDENCIES
   bootstrap-sass (= 3.3.7)
   byebug (= 9.0.6)
   coffee-rails (= 4.2.2)
+  config
   font-awesome-rails
   gmaps4rails
   guard (= 2.13.0)
