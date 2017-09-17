@@ -8,7 +8,7 @@
     <%#<%= form_tag 'http://0.0.0.0:8000/events', remote: true, class: 'new-event-form', id: 'form' do %>
 
     <%# localhost must be used when discover is running inside intellij %>
-    <%= form_tag 'http://' + Settings.host + ':' + Settings.port.to_s + '/events', remote: true, class: 'new-event-form', id: 'form' do %>
+    <%= form_tag Settings.ssl + '://' + Settings.host + ':' + Settings.port.to_s + '/events', remote: true, class: 'new-event-form', id: 'form' do %>
 
       <%#  Input for eventName %>
       <%= label_tag(:name, "Event Name") %>
