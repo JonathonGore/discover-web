@@ -26,6 +26,8 @@ api.key
 
 .DS_STORE
 
+server.crt
+
 config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml

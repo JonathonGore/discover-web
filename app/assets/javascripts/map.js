@@ -23,7 +23,7 @@ function fetchMarkers() {
   $.ajax({
       type: "GET",
       // This needs to be changed depending on environment
-      url: "http://localhost:8000/events",
+      url: "https://discover-app.site:8000/events",
       xhrFields: {
         withCredentials: false
       }
