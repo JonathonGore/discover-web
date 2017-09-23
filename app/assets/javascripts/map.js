@@ -22,8 +22,8 @@ function fetchMarkers() {
   // Post to backend
   $.ajax({
       type: "GET",
-      // This needs to be changed depending on environment
-      url: "https://discover-app.site:8000/events",
+      // Host and port are set in the maps erb file coming from ruby env vars
+      url: "https://" + host + ":" + port + "/events",
       xhrFields: {
         withCredentials: false
       }
