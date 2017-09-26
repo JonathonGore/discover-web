@@ -364,7 +364,8 @@ function initMap() {
           console.log("success", json);
       }).error(function (xhr) {
         // handle error
-        debugger;
+        // TODO If elasticsearch has no entries we get an empty response
+        // and hance an error
         console.log("error");
       });
     } else {
