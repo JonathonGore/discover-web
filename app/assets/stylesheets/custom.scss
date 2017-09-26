@@ -216,6 +216,7 @@ footer {
   left: 205px;
   margin: 5px 0px 5px -25%;
   position: relative;
+  overflow-y: auto;
   z-index: 1;
 
   /* Styling */
@@ -225,6 +226,7 @@ footer {
 }
 
 .map {
+  max-height: 400px;
   width: 100%;
   display: flex;
 }
@@ -237,10 +239,20 @@ i.map-icon {
   color: #666666 !important;
 }
 
+/* Info window */
+
+.info-content {
+  min-width: 100px;
+}
+
+.info-heading {
+  font-size: 24px;
+}
+
 /* sign-up button */
 
 #sign-up {
-  margin-top: 10px
+  margin-top: 10px;
 }
 
 /* miscellaneous */

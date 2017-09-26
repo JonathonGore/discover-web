@@ -3,11 +3,14 @@ var coords;
 var map;
 var errorPrompt = "<strong>Error: </strong>"
 
-function addMarker(c, name) {
-  var locationMarker = new google.maps.Marker({
+function addMarker(c, title, desc) {
+  var marker = new google.maps.Marker({
     position: new google.maps.LatLng(parseFloat(c.lat), parseFloat(c.lng)),
     map: map
   });
+
+  // Add the info window to the marker
+  addInfoWindow(marker, title, desc)
 }
 
 /* Populates the form dialog for creating a new event with initial data,
@@ -16,6 +19,32 @@ function addMarker(c, name) {
 function populateCreateEventForm() {
   $("#latitude").val(coords.lat);
   $("#longitude").val(coords.lng);
+}
+
+function getInfoContent(title, desc) {
+  return '<div class="info-content">'+
+          '<div class="info-heading">' + title + '</div>'+
+            '<div id="bodyContent">'+
+              desc +
+            '</div>'+
+        '</div>';
+
+}
+
+function addInfoWindow(marker, title, desc) {
+  // Make sure desription is not undefined
+  desc = (typeof desc != 'undefined') ? desc : ""
+
+  // Add a listener to the marker to allow a dialog to open
+  google.maps.event.addListener(marker, 'click',
+    (function(marker, content){ return function() {
+      var infowindow = new google.maps.InfoWindow()
+      // This content refers to argument of this function
+      infowindow.setContent(content);
+      infowindow.open(map,marker);
+    };
+  })(marker, getInfoContent(title, desc)));
+
 }
 
 function fetchMarkers() {
@@ -32,24 +61,20 @@ function fetchMarkers() {
 
       // For each marker we receive from the database add it to the map
       for(var i = 0; i < markers.length; ++i) {
-
-        var content = markers[i]["name"]
+        // Get the title of the event from the JSON
+        var title = markers[i]["name"]
+        // Ensure the key exists otherwise make it empty
+        var desc = markers[i]["description"]
 
         // Create the actual marker
         marker = new google.maps.Marker({
           position: new google.maps.LatLng(markers[i]["latitude"], markers[i]["longitude"]),
-          title: markers[i]["name"],
+          title: title,
           map: map
         });
 
-        // Add a listener to the marker to allow a dialog to open
-        google.maps.event.addListener(marker, 'click',
-          (function(marker,content){ return function() {
-            var infowindow = new google.maps.InfoWindow()
-            infowindow.setContent(content);
-            infowindow.open(map,marker);
-          };
-        })(marker,content));
+        // Add the info window to the marker
+        addInfoWindow(marker, title, desc)
 
       }
   }).error(function (xhr) {
@@ -96,7 +121,7 @@ function deleteOrConvert(key, map) {
  */
 function prepareData(formArray) {
     // The values we want to keep
-    var values = ["name", "endDate", "startDate", "latitude", "longitude"];
+    var values = ["name", "description", "endDate", "startDate", "latitude", "longitude"];
 
     // The array to return
     var tempArray = {};
@@ -322,7 +347,9 @@ function initMap() {
       // Close dialog
       $("#new-event").addClass("hidden");
       // Create new marker at the location
-      addMarker({lat: valueMap["latitude"], lng: valueMap["longitude"]}, valueMap["name"]);
+      // TODO: Add info window here as well as after an ajax request
+      addMarker({lat: valueMap["latitude"], lng: valueMap["longitude"]},
+      valueMap["name"], valueMap["description"]);
 
       // Post to backend
       $.ajax({

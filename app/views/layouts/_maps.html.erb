@@ -10,9 +10,16 @@
     <%# localhost must be used when discover is running inside intellij %>
     <%= form_tag 'https://' + Settings.host + ':' + Settings.port.to_s + '/events', remote: true, class: 'new-event-form', id: 'form' do %>
 
+      <%# All names for input field must match exactly what is being parsed by gson %>
+      <%# in the backend %>
+
       <%#  Input for eventName %>
       <%= label_tag(:name, "Event Name") %>
       <%= text_field_tag(:name, nil, class: 'form-control',  placeholder: 'Event name') %>
+
+      <%#  Input for description %>
+      <%= label_tag(:description, "Description") %>
+      <%= text_area_tag(:description, nil, class: 'form-control',  placeholder: 'Description') %>
 
       <%# Input for startDate %>
       <%= label_tag(:startDate, "Start Date") %>
